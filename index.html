@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Моей любимой</title>
+    <style>
+        /* ОСНОВНЫЕ СТИЛИ - Атмосфера любви и уюта */
+        :root {
+            --bg-color: #fff0f5; /* Лавандово-розовый фон */
+            --text-color: #5d4037; /* Темно-коричневый для текста, мягкий */
+            --accent-love: #ff69b4; /* Розовый для акцентов любви */
+            --accent-birthday: #87cefa; /* Небесно-голубой для ДР */
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden; /* Отключаем прокрутку самого окна */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ СЛАЙДОВ */
+        .main-container {
+            width: 90%;
+            max-width: 400px; /* Идеально для мобильных */
+            height: 80vh;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ОБЩИЙ СТИЛЬ СЛАЙДА */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 20px; line-height: 1.3; }
+        p { font-size: 1rem; margin-bottom: 30px; line-height: 1.5; opacity: 0.9; }
+
+        /* КНОПКИ */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        .btn-love {
+            background-color: var(--accent-love);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .btn-bday {
+            background-color: var(--accent-birthday);
+            color: white;
+            box-shadow: 0 4px 10px rgba(135, 206, 250, 0.3);
+        }
+
+        /* СЛАЙД 1: СТАРТ */
+        #slide-start {
+            /* Ссылка на ваше фото, которое лежит в той же папке */
+            background-image: linear-gradient(rgba(255,240,245,0.7), rgba(255,240,245,0.7)), url('our-photo.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* СЛАЙД 2: ДЕНЬ РОЖДЕНИЯ */
+        #slide-bday { background-color: #e0f7fa; } /* Легкий голубой фон */
+        .bday-text { color: #006064; font-weight: bold; }
+
+        /* ИНТЕРАКТИВНЫЙ ТОРТ (SVG) */
+        .cake-icon {
+            width: 100px; height: 100px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .cake-icon:hover { transform: scale(1.1) rotate(5deg); }
+
+        /* СЛАЙД 3: МУЗЫКА */
+        #slide-music { background-color: #fff; }
+        .music-list {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto; /* Прокрутка списка песен */
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .music-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .music-item:hover { background: #f0f0f0; }
+        .music-item.selected { background-color: var(--accent-love); color: white; }
+
+        /* СЛАЙД 4: ФИНАЛ */
+        #slide-final { background-color: #ffebee; } /* Окрас любви */
+        .heart-icon { font-size: 3rem; color: var(--accent-love); margin-bottom: 20px; }
+        .final-link {
+            font-size: 1.2rem;
+            color: var(--accent-love);
+            font-weight: bold;
+            text-decoration: underline;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="main-player" loop></audio>
+
+    <div class="main-container">
+
+        <div class="slide active" id="slide-start">
+            <h1>Моей любимой...</h1>
+            <p>эти два дня без тебя были нереально трудными морально и поэтому, я создал данную папку воспоминаний о тебе любимая.</p>
+            <button class="btn btn-love" onclick="nextSlide('slide-start', 'slide-bday')">открыть папку любви</button>
+        </div>
+
+        <div class="slide" id="slide-bday">
+            <h1 class="bday-text">И да я помню...</h1>
+            <p>что твое день рождения <br> тринадцетого июня :) 💗🎂</p>
+            
+            <div onclick="nextSlide('slide-bday', 'slide-music')">
+                <svg class="cake-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g id="Cake" fill="none" stroke="#2e3a59" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m11 50h42"/><path d="m13 50v-16a2 2 0 0 1 2-2h34a2 2 0 0 1 2 2v16"/><path d="m11 54h42v2a4 4 0 0 1 -4 4h-34a4 4 0 0 1 -4 -4z"/><path d="m32 24v-8"/><path d="m32 12a2 2 0 1 1 -2-2 2 2 0 0 1 2 2z"/><path d="m20 32v-4"/><path d="m20 24a2 2 0 1 1 -2-2 2 2 0 0 1 2 2z"/><path d="m44 32v-4"/><path d="m44 24a2 2 0 1 1 -2-2 2 2 0 0 1 2 2z"/><path d="m13 40h38"/><path d="m13 44h38"/><path d="m13 36h38"/></g></svg>
+                <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">(нажми на торт)</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-music">
+            <h1>Твоя музыка...</h1>
+            <p>Выбери песню, которая будет звучать для тебя:</p>
+            
+            <div class="music-list">
+                <div class="music-item" onclick="selectTrack(this, 'song1.mp3')"><span>1. 1</span> ▶️</div>
+                <div class="music-item" onclick="selectTrack(this, 'song2.mp3')"><span>2. 2</span> ▶️</div>
+                <div class="music-item" onclick="selectTrack(this, 'song3.mp3')"><span>3. 3</span> ▶️</div>
+            </div>
+
+            <button class="btn btn-love" id="btn-music-next" style="display: none;" onclick="nextSlide('slide-music', 'slide-final')">дальше</button>
+        </div>
+
+        <div class="slide" id="slide-final">
+            <div class="heart-icon">❤️</div>
+            <h1>главный сюрприз...</h1>
+            <p>моей любимой ☺️💗</p>
+            
+            <a href="https://t.me/+7TJJeuyLyc5mNWIy" target="_blank" class="final-link">Открыть наш уголок</a>
+            <p style="font-size: 0.8rem; margin-top: 30px; opacity: 0.6;">(Я люблю тебя)</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ЛОГИКА ПЕРЕКЛЮЧЕНИЯ СЛАЙДОВ
+        function nextSlide(currentId, nextId) {
+            document.getElementById(currentId).classList.remove('active');
+            
+            // Маленькая задержка перед появлением следующего, чтобы анимация была красивой
+            setTimeout(() => {
+                document.getElementById(nextId).classList.add('active');
+            }, 300);
+        }
+
+        // ЛОГИКА ПЛЕЕРА
+        const player = document.getElementById('main-player');
+        const nextButton = document.getElementById('btn-music-next');
+
+        function selectTrack(element, songFileName) {
+            // Убираем выделение с других песен
+            const tracks = document.querySelectorAll('.music-item');
+            tracks.forEach(t => t.classList.remove('selected'));
+            
+            // Выделяем эту песню
+            element.classList.add('selected');
+
+            // Устанавливаем и запускаем новую песню
+            player.src = songFileName;
+            player.play().catch(e => {
+                console.error("Браузер заблокировал автовоспроизведение:", e);
+                // Если не играет автоматически, пользователь нажал на песню, это действие, должно сработать
+                player.play();
+            });
+
+            // Показываем кнопку "Дальше"
+            nextButton.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
